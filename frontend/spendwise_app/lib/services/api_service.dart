@@ -35,7 +35,7 @@ class ApiService {
       'description': description,
     });
     final res = await http.post(
-      Uri.parse('$_base/expenses'),
+      Uri.parse('$_base/expenses/add'),
       headers: {'Content-Type': 'application/json'},
       body: body,
     );

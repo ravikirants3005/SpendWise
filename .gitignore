@@ -20,3 +20,8 @@ pubspec.lock
 # OS junk
 .DS_Store
 Thumbs.db
+
+# virtualenvs
+backend/.venv/
+.venv/
+venv/

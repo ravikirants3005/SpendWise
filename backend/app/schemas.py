@@ -1,8 +1,9 @@
+from datetime import date as DateType
+
 from pydantic import BaseModel
-from datetime import date
 
 class ExpenseCreate(BaseModel):
     amount: float
     category: str
     description: str | None = None
-    date: date | None = None
+    date: DateType | None = None

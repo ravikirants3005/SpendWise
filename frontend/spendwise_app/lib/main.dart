@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 import 'screens/all_expenses_screen.dart';
 import 'screens/analytics_screen.dart';
+import 'screens/settings_screen.dart';
 
 void main() {
   runApp(const SpendWiseApp());
@@ -56,19 +57,33 @@ class MainShell extends StatefulWidget {
 
 class _MainShellState extends State<MainShell> {
   int _index = 0;
-
-  final List<Widget> _pages = const [
-    HomeScreen(),
-    AllExpensesScreen(),
-    AnalyticsScreen(),
-  ];
+  int _homeReloadSignal = 0;
 
   @override
   Widget build(BuildContext context) {
+    final pages = [
+      HomeScreen(reloadSignal: _homeReloadSignal),
+      const AllExpensesScreen(),
+      const AnalyticsScreen(),
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('SpendWise Dashboard'),
         actions: [
+          IconButton(
+            tooltip: 'Settings',
+            icon: const Icon(Icons.settings),
+            onPressed: () async {
+              final changed = await Navigator.push<bool>(
+                context,
+                MaterialPageRoute(builder: (_) => const SettingsScreen()),
+              );
+              if (changed == true && mounted) {
+                setState(() => _homeReloadSignal++);
+              }
+            },
+          ),
           IconButton(
             tooltip: 'Toggle theme',
             icon: const Icon(Icons.dark_mode_outlined),
@@ -86,7 +101,7 @@ class _MainShellState extends State<MainShell> {
         ],
         elevation: 0,
       ),
-      body: IndexedStack(index: _index, children: _pages),
+      body: IndexedStack(index: _index, children: pages),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _index,
         onTap: (i) => setState(() => _index = i),

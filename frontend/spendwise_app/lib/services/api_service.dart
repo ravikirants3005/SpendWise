@@ -41,4 +41,9 @@ class ApiService {
     );
     return res.statusCode == 201 || res.statusCode == 200;
   }
+
+  static Future<bool> deleteExpense(String expenseId) async {
+    final res = await http.delete(Uri.parse('$_base/expenses/$expenseId'));
+    return res.statusCode == 200 || res.statusCode == 204;
+  }
 }
